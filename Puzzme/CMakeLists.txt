@@ -17,6 +17,9 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        timer.h
+        minutetimer.cpp
+        minutetimer.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
