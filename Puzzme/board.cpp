@@ -30,14 +30,25 @@ void Board::initializeNumberCells() {
 void Board::initializeImageCells(QImage *image) {
     this->cells->clear();
 
+    int w = this->ui->board->maximumSize().width(), h = this->ui->board->maximumSize().height();
+
     QPixmap pixmap = QPixmap::fromImage(image->scaled(300, 300, Qt::KeepAspectRatio));
-    QRect rect(33, 33, 33, 33);
-    QPixmap cell = pixmap.copy(rect);
-    for(int i = 1; i <= size*size; i++){
-        QLabel *label = new QLabel();
-        label->setPixmap(cell);
-        cells->append(label);
+    int cellWidthSize = w/(this->size*this->size);
+    int cellHeightSize = h/(this->size*this->size);
+    QRect rect(cellHeightSize, cellWidthSize, cellHeightSize, cellWidthSize);
+    for (int i = 1 ; i <= this->size ; i++) {
+        for( int j = 1; j <= this->size; j++) {
+            rect.setX(cellWidthSize*j);
+            QPixmap cell = pixmap.copy(rect);
+            QLabel *label = new QLabel();
+            label->setPixmap(cell);
+            cells->append(label);
+        }
+        rect.setY(cellHeightSize*i);
     }
+//    for(int i = 1; i <= size*size; i++){
+
+//    }
 }
 
 
