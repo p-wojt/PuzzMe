@@ -4,15 +4,16 @@
 #include <QMainWindow>
 #include <QTimer>
 
-class Timer
+class Timer : public QObject
 {
+    Q_OBJECT
 public:
     Timer();
-    virtual void start();
-    virtual void stop();
-    virtual void reset();
+    virtual void start() = 0;
+    virtual void stop() = 0;
+    virtual void reset() = 0;
 protected:
-    QTimer qTimer;
+    QTimer *qTimer;
 };
 
 #endif // TIMER_H
