@@ -127,25 +127,17 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="solveButton">
-       <property name="text">
-        <string>Solve</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="boardButton">
        <property name="text">
-        <string>Board</string>
+        <string>PushButton</string>
        </property>
       </widget>
      </item>
     </layout>
     <zorder>resetButton</zorder>
-    <zorder>importButton</zorder>
-    <zorder>solveButton</zorder>
-    <zorder>boardButton</zorder>
     <zorder>startButton</zorder>
+    <zorder>importButton</zorder>
+    <zorder>boardButton</zorder>
    </widget>
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
@@ -156,7 +148,11 @@
       <height>221</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="board"/>
+    <layout class="QGridLayout" name="board">
+     <property name="spacing">
+      <number>1</number>
+     </property>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -165,7 +161,7 @@
      <x>0</x>
      <y>0</y>
      <width>952</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

@@ -23,6 +23,10 @@ set(PROJECT_SOURCES
         minutetimer.cpp
         board.h
         board.cpp
+        validator.h
+        validator.cpp
+        validatorimagefile.h
+        validatorimagefile.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

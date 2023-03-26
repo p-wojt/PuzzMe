@@ -3,19 +3,22 @@
 
 #include <QMainWindow>
 #include "./ui_mainwindow.h"
+#include <QList>
+#include <QLabel>
 
 class Board : public QObject
 {
     Q_OBJECT
 public:
     Board(Ui::MainWindow *ui);
-private slots:
-    void on_boardButton_clicked();
-
-    void on_importButton_clicked();
-
+    void initializeNumberCells();
+    void initializeImageCells(QImage *image);
+    void displayCells();
+    void setup();
 private:
     Ui::MainWindow *ui;
+    short unsigned int size;
+    QList<QLabel*> *cells;
 };
 
 #endif // BOARD_H

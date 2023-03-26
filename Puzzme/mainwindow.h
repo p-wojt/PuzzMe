@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "timer.h"
 #include "board.h"
+#include "validatorimagefile.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,15 +17,14 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
 private slots:
     void on_startButton_clicked();
-
     void on_resetButton_clicked();
-
+    void on_importButton_clicked();
 private:
     Ui::MainWindow *ui;
     Timer *timer;
     Board *board;
+    ValidatorImageFile *validator;
 };
 #endif // MAINWINDOW_H
