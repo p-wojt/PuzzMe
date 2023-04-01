@@ -19,14 +19,16 @@ set(PROJECT_SOURCES
         mainwindow.ui
         timer.h
         timer.cpp
-        minutetimer.h
-        minutetimer.cpp
+        extendedtimer.h
+        extendedtimer.cpp
         board.h
         board.cpp
         validator.h
         validator.cpp
-        validatorimagefile.h
-        validatorimagefile.cpp
+        imagefilevalidator.h
+        imagefilevalidator.cpp
+        cell.h
+        cell.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

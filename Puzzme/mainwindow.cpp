@@ -1,19 +1,20 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "minutetimer.h"
+#include "extendedtimer.h"
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QDir>
 #include <QLabel>
 #include <QFileInfo>
 #include <QRect>
+#include "imagefilevalidator.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
-      timer(new MinuteTimer(ui)),
+      timer(new ExtenedTimer(ui)),
       board(new Board(ui)),
-      validator(new ValidatorImageFile())
+      validator(new ImageFileValidator())
 {
     ui->setupUi(this);
     board->setup();
@@ -29,6 +30,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_startButton_clicked()
 {
     this->timer->start();
+    this->board->startGame();
 }
 
 
@@ -44,9 +46,12 @@ void MainWindow::on_importButton_clicked()
 
    if (validator->validate(fileName)) {
        QImage image(fileName);
-       board->initializeImageCells(&image);
+       board->setImage(&image);
+       board->setImageToCells();
        board->displayCells();
    }
 
 }
+
+
 

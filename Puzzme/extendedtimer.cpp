@@ -1,54 +1,54 @@
-#include "minutetimer.h"
-
+#include "extendedtimer.h"
 #include "ui_mainwindow.h"
+
 #include <iostream>
 #include <QFileDialog>
 
-MinuteTimer::MinuteTimer(Ui::MainWindow *ui) : Timer()
+ExtenedTimer::ExtenedTimer(Ui::MainWindow *ui) : Timer()
 {
     this->hours = 0;
     this->minutes = 0;
     this->seconds = 0;
     this->ui = ui;
 
-    connect(qTimer, &QTimer::timeout, this, &MinuteTimer::process);
+    connect(qTimer, &QTimer::timeout, this, &ExtenedTimer::process);
 }
 
-void MinuteTimer::start()
+void ExtenedTimer::start()
 {
-    MinuteTimer::reset();
+    ExtenedTimer::reset();
     qTimer->start(1000);
 }
 
-void MinuteTimer::stop()
+void ExtenedTimer::stop()
 {
     qTimer->stop();
 }
 
-void MinuteTimer::reset()
+void ExtenedTimer::reset()
 {
-    MinuteTimer::stop();
+    ExtenedTimer::stop();
     this->hours = 0;
     this->minutes = 0;
     this->seconds = 0;
-    MinuteTimer::updateLCD();
+    ExtenedTimer::updateLCD();
 }
 
-void MinuteTimer::process()
+void ExtenedTimer::process()
 {
     if(++seconds >= 60) {
         this->seconds = 0;
         if(++minutes >= 60) {
             this->minutes=0;
             if(++hours >= 100) {
-                MinuteTimer::reset();
+                ExtenedTimer::reset();
             }
         }
     }
-   MinuteTimer::updateLCD();
+   ExtenedTimer::updateLCD();
 }
 
-void MinuteTimer::updateLCD() {
+void ExtenedTimer::updateLCD() {
     this->ui->Seconds->display(this->seconds);
     this->ui->Minutes->display(this->minutes);
     this->ui->Hours->display(this->hours);

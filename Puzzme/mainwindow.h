@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include "timer.h"
 #include "board.h"
-#include "validatorimagefile.h"
+#include "validator.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -25,6 +25,6 @@ private:
     Ui::MainWindow *ui;
     Timer *timer;
     Board *board;
-    ValidatorImageFile *validator;
+    Validator<QString> *validator;
 };
 #endif // MAINWINDOW_H

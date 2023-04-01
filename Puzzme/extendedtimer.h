@@ -5,15 +5,18 @@
 #include "mainwindow.h"
 #include <QLCDNumber>
 
-class MinuteTimer : public Timer
+class ExtenedTimer : public Timer
 {
 public:
-    MinuteTimer(Ui::MainWindow *ui);
+    ExtenedTimer(Ui::MainWindow *ui);
     void start();
     void stop();
     void reset();
     void process();
     void updateLCD();
+private slots:
+    void on_cellTypeButton_clicked();
+
 private:
     unsigned short seconds;
     unsigned short minutes;

@@ -5,10 +5,6 @@ template < class T >
 class Validator
 {
 public:
-    Validator()
-    {
-
-    }
     virtual bool validate(T toValidate) = 0;
 };
 
