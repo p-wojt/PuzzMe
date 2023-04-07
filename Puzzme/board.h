@@ -6,8 +6,9 @@
 #include <QList>
 #include "cell.h"
 
-class Board
+class Board : public QObject
 {
+    Q_OBJECT
 public:
     Board(Ui::MainWindow *ui);
     void initializeNumberCells();
@@ -27,6 +28,12 @@ private:
     QImage *image;
     bool areNumberCells;
     QPixmap *scaledPixmap;
+public slots:
+    void boardClicked();
+signals:
+    void clicked();
+protected:
+    void mousePressEvent(QMouseEvent* event);
 };
 
 #endif // BOARD_H

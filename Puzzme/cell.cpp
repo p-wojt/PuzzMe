@@ -1,5 +1,8 @@
 #include "cell.h"
+#include "board.h"
 
+
+//sprawdzic setVisible na false
 Cell::Cell(unsigned short id, unsigned short x, unsigned short y, const QString &text, QWidget* parent, Qt::WindowFlags f)
     : QLabel(text, parent) {
     connect(this, SIGNAL(clicked()), this, SLOT(cellClicked()));
@@ -7,11 +10,13 @@ Cell::Cell(unsigned short id, unsigned short x, unsigned short y, const QString 
     this->x = x;
     this->y = y;
     this->blank = false;
+    this->imagePixmap = nullptr;
 }
 
 Cell::Cell() {
-    connect(this, SIGNAL(clicked()), this, SLOT(cellClicked()));
+//    connect(this, SIGNAL(clicked()), this, SLOT(cellClicked()));
     this->blank = false;
+    this->imagePixmap = nullptr;
 }
 
 Cell::~Cell() {
@@ -44,12 +49,15 @@ void Cell::setPixmapAsNumber()
 
 void Cell::setPixmapAsImage()
 {
+    qDebug() << *this->imagePixmap;
     this->setPixmap(*this->imagePixmap);
 }
 
-void Cell::setPixmapAsBlank()
+void Cell::setAsBlank()
 {
-    this->setText("powinien pusty");
+    //https://stackoverflow.com/questions/23724515/qt-setting-text-to-a-qlabel-with-a-pixmap-and-back
+    //Here is written that setting text to QLabel clears any previous content.
+    this->setText("asd");
     this->setBlank(true);
 }
 
@@ -60,7 +68,10 @@ bool Cell::isBlank() const
 
 void Cell::cellClicked() {
     qDebug() << "Mouse event";
-    qDebug() << this->id << " x=" <<x<<" y="<<y;
+    qDebug() << this->id << " x=" <<x<<" y="<<y<<" isBlank: "<<isBlank()<<" pixmap: "<<this->pixmap()<<" iamgePixmap: "<<this->imagePixmap;
+    if(!this->isBlank()) {
+
+    }
 }
 
 unsigned short int Cell::getX() {

@@ -9,11 +9,14 @@
 Board::Board(Ui::MainWindow *ui)
 {
     this->ui = ui;
-    this->size = 3;
+    this->size = 4;
     this->cells = new QList<Cell*>();
     this->areNumberCells = true;
     this->image = nullptr;
     this->scaledPixmap = nullptr;
+//    connect(this, SIGNAL(clicked()), this, SLOT(boardClicked()));
+
+    this->ui->boardFrame->connect(this, SIGNAL(clicked()), this, SLOT(boardClicked()));
 }
 
 void Board::setup() {
@@ -36,54 +39,31 @@ void Board::initializeNumberCells() {
     }
 }
 
-
 void Board::setImageToCells() {
     this->areNumberCells = false;
 
     QSize size = this->ui->boardFrame->frameSize();
-    qDebug() << size.width();
-    qDebug() << size.height();
-    qDebug() << "Czy jest obrazek do skalowania? " << this->image;
     QPixmap pixmap = QPixmap::fromImage(this->image->scaled(size.width(), size.height()));
-    //lista obrazków albo pobieram obrazki i ustawiam dla określonych id
 
-//    for (int i = 0; i < this->cells->size(); i++) {
-//        Cell *cell = this->cells->at(i);
-//    }
-    int counter = 1;
+    int counter = 0;
     int cellEdgeHeight = this->cells->at(0)->height();
     int cellEdgeWidth = this->cells->at(0)->width();
     for (int i = 0 ; i < this->size ; i++) {
         for( int j = 0; j < this->size; j++) {
-
             const QPoint *topleft = new QPoint(j*cellEdgeWidth, i*cellEdgeHeight);
             const QPoint *bottomright = new QPoint(((j+1)*cellEdgeWidth), (i+1)*cellEdgeHeight);
-
             QRect rect(*topleft, *bottomright);
-//            rect.setX(cellWidthSize*j);
-            qDebug() << "przed copy";
             QPixmap cellPixmap = pixmap.copy(rect);
-            this->cells->at(counter-1)->setImagePixmap(&cellPixmap);
-            if(!this->cells->at(counter-1)->isBlank()){
-                this->cells->at(counter-1)->setPixmapAsImage();
-            }
-            qDebug() << "i=" << i << " " << "j=" <<j;
-            qDebug() << "[" << topleft->x() << "," << topleft->y() << "]" << "===" << "[" << bottomright->x() << "," << bottomright->y() << "]";
-//            if(this->cells->at(counter-1)->getId() == counter && !this->cells->at(counter-1)->isBlank()) {
 
-//            }
-//            for(int k = 0; k < this->cells->size(); k++) {
-//                if(this->cells->at(k)->getId() == counter && !this->cells->at(k)->isBlank()) {
-//                    cells->at(k)->setPixmap(cell);
-//                    break;
-//                }
-//            }
+            this->cells->at(counter)->setImagePixmap(&cellPixmap);
+            if(!this->cells->at(counter)->isBlank()){
+                this->cells->at(counter)->setPixmapAsImage();
+            }
+//            qDebug() << "i=" << i << " " << "j=" <<j;
+//            qDebug() << "[" << topleft->x() << "," << topleft->y() << "]" << "===" << "[" << bottomright->x() << "," << bottomright->y() << "]";
             counter++;
         }
     }
-//    for(int i = 1; i <= size*size; i++){
-
-    //    }
 }
 
 void Board::setImage(QImage *image)
@@ -93,6 +73,7 @@ void Board::setImage(QImage *image)
 
 
 void Board::displayCells() {
+    qDebug() << ui->board->count();
     int counter = 0;
     for(int i = 0; i < this->size; i++) {
         for (int j = 0; j < this->size; j++, counter++) {
@@ -114,49 +95,31 @@ void Board::shuffle() {
 }
 
 void Board::setBlankCell() {
-    Cell *temp = this->cells->last();
-    QPixmap *placeholder = new QPixmap();
-    temp->setPixmap(*placeholder);
-    temp->setBlank(true);
-    this->cells->replace(this->cells->size()-1, temp);
+//    Cell *temp = this->cells->last();
+//    QPixmap *placeholder = new QPixmap();
+//    temp->setPixmap(*placeholder);
+//    temp->setBlank(true);
+//    this->cells->replace(this->cells->size()-1, temp);
+    this->cells->last()->setAsBlank();
 }
 
 void Board::startGame() {
-//    this->cells->clear();
-//    this->clearBoard();
-//    this->initializeNumberCells();
+    //reset blankCell
     for(int k = 0 ; k < this->cells->size(); k++) {
-        if(this->cells->at(k)->isBlank()){
-            this->cells->at(k)->setBlank(false);
-            if(this->image == nullptr) {
-                this->cells->at(k)->setText(QString::number(this->cells->at(k)->getId()));
+        Cell *cell = this->cells->at(k);
+        if(cell->isBlank()){
+            cell->setBlank(false);
+            if(this->areNumberCells) {
+                cell->setPixmapAsNumber();
             } else {
-                QSize size = this->ui->boardFrame->frameSize();
-                QPixmap pixmap = QPixmap::fromImage(this->image->scaled(size.width(), size.height()));
-                int cellEdgeHeight = this->cells->at(0)->height();
-                int cellEdgeWidth = this->cells->at(0)->width();
-                const QPoint *topleft = new QPoint(this->cells->at(k)->getX()*cellEdgeWidth, this->cells->at(k)->getY()*cellEdgeHeight);
-                const QPoint *bottomright = new QPoint(((this->cells->at(k)->getX()+1)*cellEdgeWidth), (this->cells->at(k)->getY()+1)*cellEdgeHeight);
-                QRect rect(*topleft, *bottomright);
-                QPixmap cell = pixmap.copy(rect);
-                cells->at(k)->setPixmap(cell);
-                qDebug() << " ZAMIENILEM";
+                cell->setPixmapAsImage();
             }
-
             break;
         }
     }
+    //set new BlankCell
     this->setBlankCell();
     this->shuffle();
-    if(this->image != nullptr) {
-        qDebug() << "Obrazek: " << this->image;
-//        this->setImageToCells();
-    } else {
-        qDebug() << "Nie ma: " << this->image;
-    }
-//    this->setImageToCells();
-//    this->initializeNumberCells();
-    qDebug() << "To SHUFFLE";
     this->displayCells();
 }
 
@@ -181,4 +144,15 @@ void Board::setScaledPixmap(QSize size)
         qDebug() << this->scaledPixmap;
     }
 
+}
+
+void Board::boardClicked()
+{
+    qDebug() << "test";
+}
+
+void Board::mousePressEvent(QMouseEvent *event)
+{
+    qDebug() << "test";
+    emit clicked();
 }

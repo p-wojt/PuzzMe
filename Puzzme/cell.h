@@ -22,12 +22,12 @@ public:
     void setImagePixmap(QPixmap *newImagePixmap);
     void setPixmapAsNumber();
     void setPixmapAsImage();
-    void setPixmapAsBlank();
+    void setAsBlank();
 public slots:
     void cellClicked();
 signals:
     void clicked();
-protected:
+public:
     void mousePressEvent(QMouseEvent* event);
 private:
     unsigned short id, x, y;
