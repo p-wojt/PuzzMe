@@ -1,11 +1,11 @@
 #include "cell.h"
 #include "board.h"
+#include "QWidget"
 
 
 //sprawdzic setVisible na false
 Cell::Cell(unsigned short id, unsigned short x, unsigned short y, const QString &text, QWidget* parent, Qt::WindowFlags f)
     : QLabel(text, parent) {
-    connect(this, SIGNAL(clicked()), this, SLOT(cellClicked()));
     this->id = id;
     this->x = x;
     this->y = y;
@@ -28,8 +28,14 @@ unsigned short Cell::getId()
     return this->id;
 }
 
+void Cell::setId(unsigned short id)
+{
+    this->id = id;
+}
+
 void Cell::mousePressEvent(QMouseEvent* event) {
-    emit clicked();
+    qDebug() << "Emituje ze kliknąłem w cell";
+    emit cellClicked(this->id);
 }
 
 QPixmap *Cell::getImagePixmap() const
@@ -64,14 +70,6 @@ void Cell::setAsBlank()
 bool Cell::isBlank() const
 {
     return blank;
-}
-
-void Cell::cellClicked() {
-    qDebug() << "Mouse event";
-    qDebug() << this->id << " x=" <<x<<" y="<<y<<" isBlank: "<<isBlank()<<" pixmap: "<<this->pixmap()<<" iamgePixmap: "<<this->imagePixmap;
-    if(!this->isBlank()) {
-
-    }
 }
 
 unsigned short int Cell::getX() {

@@ -29,6 +29,8 @@ set(PROJECT_SOURCES
         imagefilevalidator.cpp
         cell.h
         cell.cpp
+        game.h
+        game.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

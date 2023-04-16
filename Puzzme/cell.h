@@ -12,6 +12,7 @@ public:
     Cell();
     ~Cell();
     unsigned short getId();
+    void setId(unsigned short id);
     unsigned short getX();
     unsigned short getY();
     void setX(unsigned short x);
@@ -23,10 +24,8 @@ public:
     void setPixmapAsNumber();
     void setPixmapAsImage();
     void setAsBlank();
-public slots:
-    void cellClicked();
 signals:
-    void clicked();
+    void cellClicked(const unsigned int id);
 public:
     void mousePressEvent(QMouseEvent* event);
 private:

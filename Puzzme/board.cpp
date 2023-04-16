@@ -9,20 +9,21 @@
 Board::Board(Ui::MainWindow *ui)
 {
     this->ui = ui;
-    this->size = 4;
+    this->size = 3;
     this->cells = new QList<Cell*>();
     this->areNumberCells = true;
     this->image = nullptr;
     this->scaledPixmap = nullptr;
 //    connect(this, SIGNAL(clicked()), this, SLOT(boardClicked()));
 
-    this->ui->boardFrame->connect(this, SIGNAL(clicked()), this, SLOT(boardClicked()));
+//    this->ui->boardFrame->connect(this, SIGNAL(clicked()), this, SLOT(boardClicked()));
 }
 
 void Board::setup() {
     this->initializeNumberCells();
     this->displayCells();
 }
+
 
 void Board::initializeNumberCells() {
     this->cells->clear();
@@ -31,8 +32,9 @@ void Board::initializeNumberCells() {
     int counter = 1;
     for(int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
-            Cell *cell = new Cell(counter, i, j, QString::number(counter));
+            Cell *cell = new Cell(counter, i, j, QString::number(counter), this);
             cell->setStyleSheet("border: 1px solid red; qproperty-alignment: AlignCenter;");
+            connect(cell, &Cell::cellClicked, this, &Board::onCellClicked);
             this->cells->append(cell);
             counter++;
         }
@@ -101,6 +103,14 @@ void Board::setBlankCell() {
 //    temp->setBlank(true);
 //    this->cells->replace(this->cells->size()-1, temp);
     this->cells->last()->setAsBlank();
+    blankCell = this->cells->last();
+    for(int i = 0; i < cells->size(); i++) {
+        Cell *temp = cells->at(i);
+        if(temp->getId() > blankCell->getId()) {
+            temp->setId(temp->getId() - 1);
+        }
+    }
+    blankCell->setId(cells->size());
 }
 
 void Board::startGame() {
@@ -146,13 +156,68 @@ void Board::setScaledPixmap(QSize size)
 
 }
 
-void Board::boardClicked()
+void Board::swapCells(Cell *cell)
 {
-    qDebug() << "test";
+
+    Board::displayCells();
 }
 
-void Board::mousePressEvent(QMouseEvent *event)
+void Board::onCellClicked(const unsigned int id)
 {
-    qDebug() << "test";
-    emit clicked();
+    qDebug() << "Cell został kliknięty o id: " << id;
+    if(blankCell->getId() == id) {
+        return;
+    }
+    bool isToSwap = false;
+    int cellIndex = 0;
+    Cell* temp = nullptr;
+    for(int i = 0; i < cells->size(); i++) {
+        temp = cells->at(i);
+        if(temp->getId() == id) {
+            qDebug() << "X"<<temp->getX();
+            qDebug() << "X"<<blankCell->getX();
+            qDebug() << "Y"<<temp->getY();
+            qDebug() << "Y"<<blankCell->getY();
+            qDebug() << "X-X" << abs(temp->getX() - blankCell->getX());
+            qDebug() << "Y-Y" << abs(temp->getY() - blankCell->getY());
+            if(abs(temp->getX() - blankCell->getX()) <= 1 && abs(temp->getY() - blankCell->getY()) <= 1 && !(abs(temp->getY() - blankCell->getY()) == abs(temp->getX() - blankCell->getX()))) {
+                qDebug() << "Zamiana";
+                isToSwap = true;
+                cellIndex = i;
+                break;
+            }
+        }
+    }
+
+    if(isToSwap) {
+        unsigned int blankCellIndex = 0;
+        for(int i = 0; i < cells->size(); i++) {
+            if(cells->at(i)->isBlank()) {
+                blankCellIndex = i;
+                break;
+            }
+        }
+        int tempNumber = temp->getX();
+        temp->setX(blankCell->getX());
+        blankCell->setX(tempNumber);
+        tempNumber = temp->getY();
+        temp->setY(blankCell->getY());
+        blankCell->setY(tempNumber);
+        cells->swapItemsAt(cellIndex, blankCellIndex);
+        Board::displayCells();
+
+
+    bool gameEnd = true;
+    for(int i = 1; i <= cells->size(); i++) {
+        if(cells->at(i-1)->getId() != i){
+            gameEnd = false;
+            break;
+        }
+    }
+    if(gameEnd) {
+        qDebug() << "WYGRANA!";
+    }
+    }
 }
+
+

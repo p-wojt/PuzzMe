@@ -157,6 +157,9 @@
     </layout>
    </widget>
    <widget class="QFrame" name="boardFrame">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>290</x>
@@ -205,6 +208,10 @@
      </item>
     </layout>
    </widget>
+   <zorder>boardFrame</zorder>
+   <zorder>horizontalLayoutWidget</zorder>
+   <zorder>horizontalLayoutWidget_2</zorder>
+   <zorder>horizontalLayoutWidget_3</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

@@ -6,9 +6,8 @@
 #include <QList>
 #include "cell.h"
 
-class Board : public QObject
+class Board : public QWidget
 {
-    Q_OBJECT
 public:
     Board(Ui::MainWindow *ui);
     void initializeNumberCells();
@@ -21,19 +20,18 @@ public:
     void startGame();
     void clearBoard();
     void setScaledPixmap(QSize size);
+    void swapCells(Cell *cell);
 private:
+    static Board* instance;
     Ui::MainWindow *ui;
     short unsigned int size;
     QList<Cell*> *cells;
+    Cell* blankCell;
     QImage *image;
     bool areNumberCells;
     QPixmap *scaledPixmap;
 public slots:
-    void boardClicked();
-signals:
-    void clicked();
-protected:
-    void mousePressEvent(QMouseEvent* event);
+    void onCellClicked(const unsigned int id);
 };
 
 #endif // BOARD_H
