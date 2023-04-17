@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QFileInfo>
 #include <QRect>
+#include "boardsizeinput.h"
 #include "imagefilevalidator.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -51,6 +52,20 @@ void MainWindow::on_importButton_clicked()
        board->displayCells();
    }
 
+}
+
+void MainWindow::on_boardButton_clicked()
+{
+    qDebug() << "klikniety!";
+    BoardSizeInput dialog(this);
+        if (dialog.exec() == QDialog::Accepted)
+        {
+            unsigned short value = dialog.getValue();
+            this->board->setSize(value);
+            this->board->clearBoard();
+            this->board->setup();
+            // do something with value
+        }
 }
 
 

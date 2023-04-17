@@ -11,19 +11,19 @@ public:
     explicit Cell(unsigned short id, unsigned short x, unsigned short y, const QString &text, QWidget *parent=nullptr, Qt::WindowFlags f=Qt::WindowFlags());
     Cell();
     ~Cell();
-    unsigned short getId();
-    void setId(unsigned short id);
-    unsigned short getX();
-    unsigned short getY();
-    void setX(unsigned short x);
-    void setY(unsigned short y);
     void setBlank(bool isBlank);
     bool isBlank() const;
-    QPixmap *getImagePixmap() const;
     void setImagePixmap(QPixmap *newImagePixmap);
+    void setAsBlank();
     void setPixmapAsNumber();
     void setPixmapAsImage();
-    void setAsBlank();
+    void setId(unsigned short id);
+    void setX(unsigned short x);
+    void setY(unsigned short y);
+    QPixmap *getImagePixmap() const;
+    unsigned short getId();
+    unsigned short getX();
+    unsigned short getY();
 signals:
     void cellClicked(const unsigned int id);
 public:

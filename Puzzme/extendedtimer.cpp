@@ -1,9 +1,6 @@
 #include "extendedtimer.h"
 #include "ui_mainwindow.h"
 
-#include <iostream>
-#include <QFileDialog>
-
 ExtenedTimer::ExtenedTimer(Ui::MainWindow *ui) : Timer()
 {
     this->hours = 0;

@@ -21,6 +21,7 @@ private slots:
     void on_startButton_clicked();
     void on_resetButton_clicked();
     void on_importButton_clicked();
+    void on_boardButton_clicked();
 private:
     Ui::MainWindow *ui;
     Timer *timer;

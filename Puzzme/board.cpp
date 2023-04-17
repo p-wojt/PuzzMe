@@ -3,6 +3,7 @@
 #include <QList>
 #include <iostream>
 #include <QImage>
+#include "boardsizeinput.h"
 #include "cell.h"
 #include <QSize>
 
@@ -14,9 +15,6 @@ Board::Board(Ui::MainWindow *ui)
     this->areNumberCells = true;
     this->image = nullptr;
     this->scaledPixmap = nullptr;
-//    connect(this, SIGNAL(clicked()), this, SLOT(boardClicked()));
-
-//    this->ui->boardFrame->connect(this, SIGNAL(clicked()), this, SLOT(boardClicked()));
 }
 
 void Board::setup() {
@@ -162,6 +160,8 @@ void Board::swapCells(Cell *cell)
     Board::displayCells();
 }
 
+
+
 void Board::onCellClicked(const unsigned int id)
 {
     qDebug() << "Cell został kliknięty o id: " << id;
@@ -174,12 +174,6 @@ void Board::onCellClicked(const unsigned int id)
     for(int i = 0; i < cells->size(); i++) {
         temp = cells->at(i);
         if(temp->getId() == id) {
-            qDebug() << "X"<<temp->getX();
-            qDebug() << "X"<<blankCell->getX();
-            qDebug() << "Y"<<temp->getY();
-            qDebug() << "Y"<<blankCell->getY();
-            qDebug() << "X-X" << abs(temp->getX() - blankCell->getX());
-            qDebug() << "Y-Y" << abs(temp->getY() - blankCell->getY());
             if(abs(temp->getX() - blankCell->getX()) <= 1 && abs(temp->getY() - blankCell->getY()) <= 1 && !(abs(temp->getY() - blankCell->getY()) == abs(temp->getX() - blankCell->getX()))) {
                 qDebug() << "Zamiana";
                 isToSwap = true;
@@ -219,5 +213,4 @@ void Board::onCellClicked(const unsigned int id)
     }
     }
 }
-
 

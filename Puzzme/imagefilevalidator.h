@@ -7,7 +7,7 @@
 class ImageFileValidator : public Validator<QString>
 {
 public:
-    ImageFileValidator();
+    ImageFileValidator() : Validator<QString>() {};
     bool validate(QString toValidate);
 };
 

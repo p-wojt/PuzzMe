@@ -2,8 +2,6 @@
 #include "board.h"
 #include "QWidget"
 
-
-//sprawdzic setVisible na false
 Cell::Cell(unsigned short id, unsigned short x, unsigned short y, const QString &text, QWidget* parent, Qt::WindowFlags f)
     : QLabel(text, parent) {
     this->id = id;
@@ -14,7 +12,6 @@ Cell::Cell(unsigned short id, unsigned short x, unsigned short y, const QString 
 }
 
 Cell::Cell() {
-//    connect(this, SIGNAL(clicked()), this, SLOT(cellClicked()));
     this->blank = false;
     this->imagePixmap = nullptr;
 }
@@ -34,7 +31,6 @@ void Cell::setId(unsigned short id)
 }
 
 void Cell::mousePressEvent(QMouseEvent* event) {
-    qDebug() << "Emituje ze kliknąłem w cell";
     emit cellClicked(this->id);
 }
 
@@ -63,7 +59,7 @@ void Cell::setAsBlank()
 {
     //https://stackoverflow.com/questions/23724515/qt-setting-text-to-a-qlabel-with-a-pixmap-and-back
     //Here is written that setting text to QLabel clears any previous content.
-    this->setText("asd");
+    this->setText("");
     this->setBlank(true);
 }
 

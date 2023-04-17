@@ -1,12 +1,5 @@
 #include "imagefilevalidator.h"
 #include <QFileInfo>
-#include <QString>
-#include "validator.h"
-
-ImageFileValidator::ImageFileValidator() : Validator<QString>() {
-
-}
-
 
 bool ImageFileValidator::validate(QString fileName) {
     if (!fileName.isEmpty()) {

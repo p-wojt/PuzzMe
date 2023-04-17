@@ -24,13 +24,14 @@ set(PROJECT_SOURCES
         board.h
         board.cpp
         validator.h
-        validator.cpp
         imagefilevalidator.h
         imagefilevalidator.cpp
         cell.h
         cell.cpp
         game.h
         game.cpp
+        boardsizeinput.h
+        boardsizeinput.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -53,6 +54,7 @@ else()
         add_executable(Puzzme
             ${PROJECT_SOURCES}
         )
+
     endif()
 endif()
 

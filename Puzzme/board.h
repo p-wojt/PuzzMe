@@ -21,8 +21,11 @@ public:
     void clearBoard();
     void setScaledPixmap(QSize size);
     void swapCells(Cell *cell);
+    void setSize(short unsigned int size)
+    {
+        this->size = size;
+    }
 private:
-    static Board* instance;
     Ui::MainWindow *ui;
     short unsigned int size;
     QList<Cell*> *cells;
@@ -32,6 +35,8 @@ private:
     QPixmap *scaledPixmap;
 public slots:
     void onCellClicked(const unsigned int id);
+private slots:
+    void on_cellTypeButton_clicked();
 };
 
 #endif // BOARD_H
