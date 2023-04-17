@@ -56,7 +56,7 @@ void MainWindow::on_importButton_clicked()
 
 void MainWindow::on_boardButton_clicked()
 {
-    qDebug() << "klikniety!";
+
     BoardSizeInput dialog(this);
         if (dialog.exec() == QDialog::Accepted)
         {
@@ -66,6 +66,12 @@ void MainWindow::on_boardButton_clicked()
             this->board->setup();
             // do something with value
         }
+}
+
+void MainWindow::on_cellTypeButton_clicked()
+{
+    this->board->changeState();
+    this->board->displayCells();
 }
 
 

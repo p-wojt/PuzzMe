@@ -53,14 +53,12 @@ void Board::setImageToCells() {
             const QPoint *topleft = new QPoint(j*cellEdgeWidth, i*cellEdgeHeight);
             const QPoint *bottomright = new QPoint(((j+1)*cellEdgeWidth), (i+1)*cellEdgeHeight);
             QRect rect(*topleft, *bottomright);
-            QPixmap cellPixmap = pixmap.copy(rect);
+//            QPixmap cellPixmap = pixmap.copy(rect);
 
-            this->cells->at(counter)->setImagePixmap(&cellPixmap);
+            this->cells->at(counter)->setImagePixmap(new QPixmap(pixmap.copy(rect)));
             if(!this->cells->at(counter)->isBlank()){
                 this->cells->at(counter)->setPixmapAsImage();
             }
-//            qDebug() << "i=" << i << " " << "j=" <<j;
-//            qDebug() << "[" << topleft->x() << "," << topleft->y() << "]" << "===" << "[" << bottomright->x() << "," << bottomright->y() << "]";
             counter++;
         }
     }
@@ -158,6 +156,28 @@ void Board::swapCells(Cell *cell)
 {
 
     Board::displayCells();
+}
+
+void Board::changeState()
+{
+    bool areImagesSet = true;
+    for(int i = 0; i<this->cells->size(); i++) {
+        if(!cells->at(i)->isBlank()) {
+            if(areNumberCells) {
+                if(cells->at(i)->isImageSet()) {
+                    cells->at(i)->setPixmapAsImage();
+                } else {
+                    areImagesSet = false;
+                    break;
+                }
+            } else {
+                cells->at(i)->setPixmapAsNumber();
+            }
+        }
+    }
+    if(areImagesSet) {
+        areNumberCells = !areNumberCells;
+    }
 }
 
 

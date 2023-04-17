@@ -25,6 +25,7 @@ public:
     {
         this->size = size;
     }
+    void changeState();
 private:
     Ui::MainWindow *ui;
     short unsigned int size;
@@ -35,8 +36,7 @@ private:
     QPixmap *scaledPixmap;
 public slots:
     void onCellClicked(const unsigned int id);
-private slots:
-    void on_cellTypeButton_clicked();
+
 };
 
 #endif // BOARD_H

@@ -24,6 +24,7 @@ public:
     unsigned short getId();
     unsigned short getX();
     unsigned short getY();
+    bool isImageSet();
 signals:
     void cellClicked(const unsigned int id);
 public:

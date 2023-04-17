@@ -46,6 +46,8 @@ void Cell::setImagePixmap(QPixmap *newImagePixmap)
 
 void Cell::setPixmapAsNumber()
 {
+    //https://stackoverflow.com/questions/23724515/qt-setting-text-to-a-qlabel-with-a-pixmap-and-back
+    //Here is written that setting text to QLabel clears any previous content.
     this->setText(QString::number(this->id));
 }
 
@@ -74,6 +76,11 @@ unsigned short int Cell::getX() {
 
 unsigned short int Cell::getY() {
     return this->y;
+}
+
+bool Cell::isImageSet()
+{
+    return this->imagePixmap != nullptr;
 }
 
 void Cell::setX(unsigned short x) {
