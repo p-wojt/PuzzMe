@@ -64,12 +64,19 @@ void MainWindow::on_boardButton_clicked()
             this->board->setSize(value);
             this->board->clearBoard();
             this->board->setup();
+            this->timer->reset();
             // do something with value
         }
 }
 
-void MainWindow::on_cellTypeButton_clicked()
+
+void MainWindow::on_imageNumberButton_clicked()
 {
+    QPushButton *button = qobject_cast<QPushButton*>(sender());
+    if (button != nullptr)
+    {
+        button->setText(board->getAreNumberCells() ? "Numbers" : "Images");
+    }
     this->board->changeState();
     this->board->displayCells();
 }

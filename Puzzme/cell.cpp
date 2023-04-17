@@ -61,6 +61,7 @@ void Cell::setAsBlank()
 {
     //https://stackoverflow.com/questions/23724515/qt-setting-text-to-a-qlabel-with-a-pixmap-and-back
     //Here is written that setting text to QLabel clears any previous content.
+    this->setPixmapAsNumber();
     this->setText("");
     this->setBlank(true);
 }

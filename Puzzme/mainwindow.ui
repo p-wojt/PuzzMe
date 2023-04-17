@@ -156,9 +156,9 @@
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QPushButton" name="cellTypeButton">
+      <widget class="QPushButton" name="imageNumberButton">
        <property name="text">
-        <string>Image</string>
+        <string>Numbers</string>
        </property>
       </widget>
      </item>

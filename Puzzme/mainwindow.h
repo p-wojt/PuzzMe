@@ -22,7 +22,7 @@ private slots:
     void on_resetButton_clicked();
     void on_importButton_clicked();
     void on_boardButton_clicked();
-    void on_cellTypeButton_clicked();
+    void on_imageNumberButton_clicked();
 private:
     Ui::MainWindow *ui;
     Timer *timer;

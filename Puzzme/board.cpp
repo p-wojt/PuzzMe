@@ -180,6 +180,11 @@ void Board::changeState()
     }
 }
 
+bool Board::getAreNumberCells() const
+{
+    return areNumberCells;
+}
+
 
 
 void Board::onCellClicked(const unsigned int id)
@@ -230,7 +235,10 @@ void Board::onCellClicked(const unsigned int id)
     }
     if(gameEnd) {
         qDebug() << "WYGRANA!";
+        this->blankCell->setPixmapAsImage();
+        Board::displayCells();
     }
     }
 }
+
 

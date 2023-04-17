@@ -26,6 +26,8 @@ public:
         this->size = size;
     }
     void changeState();
+    bool getAreNumberCells() const;
+
 private:
     Ui::MainWindow *ui;
     short unsigned int size;
@@ -36,6 +38,7 @@ private:
     QPixmap *scaledPixmap;
 public slots:
     void onCellClicked(const unsigned int id);
+
 
 };
 
