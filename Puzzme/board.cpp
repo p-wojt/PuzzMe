@@ -31,7 +31,7 @@ void Board::initializeNumberCells() {
     for(int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             Cell *cell = new Cell(counter, i, j, QString::number(counter), this);
-            cell->setStyleSheet("border: 1px solid red; qproperty-alignment: AlignCenter;");
+            cell->setStyleSheet("border: 1px solid #F8F8F8; qproperty-alignment: AlignCenter; color: #F8F8F8; font-size: 24px;");
             connect(cell, &Cell::cellClicked, this, &Board::onCellClicked);
             this->cells->append(cell);
             counter++;

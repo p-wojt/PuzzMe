@@ -14,8 +14,6 @@ public:
     void reset();
     void process();
     void updateLCD();
-private slots:
-    void on_cellTypeButton_clicked();
 private:
     unsigned short seconds;
     unsigned short minutes;

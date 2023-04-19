@@ -32,6 +32,10 @@ set(PROJECT_SOURCES
         game.cpp
         boardsizeinput.h
         boardsizeinput.cpp
+        colorutils.h
+        colorutils.cpp
+        textutils.h
+        textutils.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

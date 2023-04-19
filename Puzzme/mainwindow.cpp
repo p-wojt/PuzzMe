@@ -19,6 +19,13 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     board->setup();
+
+    ui->timer->setStyleSheet("qproperty-alignment: AlignCenter; color: #F8F8F8; font-size: 48px;");
+    QList<QPushButton*> buttons = ui->centralwidget->findChildren<QPushButton*>();
+    for (auto button : buttons) {
+        button->setStyleSheet("border: 1px solid black; background-color: #0E4C92; color: #F8F8F8; font-family: \"Inter\"; font-size: 16pt; width: 200px; height: 50px;");
+
+    }
 }
 
 MainWindow::~MainWindow()

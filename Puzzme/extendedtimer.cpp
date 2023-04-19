@@ -1,5 +1,6 @@
 #include "extendedtimer.h"
 #include "ui_mainwindow.h"
+#include "textutils.h"
 
 ExtenedTimer::ExtenedTimer(Ui::MainWindow *ui) : Timer()
 {
@@ -7,6 +8,7 @@ ExtenedTimer::ExtenedTimer(Ui::MainWindow *ui) : Timer()
     this->minutes = 0;
     this->seconds = 0;
     this->ui = ui;
+    this->ui->timer->
 
     connect(qTimer, &QTimer::timeout, this, &ExtenedTimer::process);
 }
@@ -46,7 +48,10 @@ void ExtenedTimer::process()
 }
 
 void ExtenedTimer::updateLCD() {
-    this->ui->Seconds->display(this->seconds);
-    this->ui->Minutes->display(this->minutes);
-    this->ui->Hours->display(this->hours);
+    this->ui->timer->setText(
+                TextUtils::getTimeDigitsFormatFrom(hours)
+                +":"
+                +TextUtils::getTimeDigitsFormatFrom(minutes)
+                +":"
+                +TextUtils::getTimeDigitsFormatFrom(seconds));
 }
