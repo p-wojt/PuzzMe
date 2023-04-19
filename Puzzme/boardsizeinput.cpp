@@ -2,15 +2,15 @@
 #include <QDialog>
 #include <QIntValidator>
 #include <QLineEdit>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QVBoxLayout>
 
 BoardSizeInput::BoardSizeInput(QWidget *parent) : QDialog(parent)
 {
-    setWindowTitle(tr("Input Value"));
+    setWindowTitle(tr("Board size"));
           m_lineEdit = new QLineEdit(this);
-          QIntValidator *validator = new QIntValidator(3, 6, this);
-          m_lineEdit->setValidator(validator);
+          m_lineEdit->setValidator(new QIntValidator(3, 6, this));
           m_okButton = new QPushButton(tr("OK"), this);
           m_cancelButton = new QPushButton(tr("Cancel"), this);
           connect(m_okButton, &QPushButton::clicked, this, &QDialog::accept);
@@ -25,5 +25,11 @@ BoardSizeInput::BoardSizeInput(QWidget *parent) : QDialog(parent)
 
 unsigned short BoardSizeInput::getValue()
 {
-    return m_lineEdit->text().toShort();
+    short value = m_lineEdit->text().toShort();
+    if(value >= 3 && value <= 9 ) {
+        return value;
+    } else {
+        QMessageBox::information(this, "Puzzme", "Board size should be between 3 and 9! Board have been set to default size: 3");
+        return 3;
+    }
 }

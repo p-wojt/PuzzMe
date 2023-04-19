@@ -9,6 +9,8 @@
 #include <QRect>
 #include "boardsizeinput.h"
 #include "imagefilevalidator.h"
+#include <QResizeEvent>
+#include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -20,12 +22,16 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     board->setup();
 
+    ui->horizontalLayout->setAlignment(Qt::AlignCenter);
+    ui->horizontalLayout->setSpacing(10);
+
     ui->timer->setStyleSheet("qproperty-alignment: AlignCenter; color: #F8F8F8; font-size: 48px;");
     QList<QPushButton*> buttons = ui->centralwidget->findChildren<QPushButton*>();
     for (auto button : buttons) {
         button->setStyleSheet("border: 1px solid black; background-color: #0E4C92; color: #F8F8F8; font-family: \"Inter\"; font-size: 16pt; width: 200px; height: 50px;");
 
     }
+
 }
 
 MainWindow::~MainWindow()
@@ -53,6 +59,7 @@ void MainWindow::on_importButton_clicked()
     QString fileName = QFileDialog::getOpenFileName(this, "Open a file", QDir::homePath(), "Image (*.jpg, *.png)");
 
    if (validator->validate(fileName)) {
+
        QImage image(fileName);
        board->setImage(&image);
        board->setImageToCells();
@@ -86,6 +93,12 @@ void MainWindow::on_imageNumberButton_clicked()
     }
     this->board->changeState();
     this->board->displayCells();
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    ui->mainLayout_2->setGeometry(rect());
+    QMainWindow::resizeEvent(event);
 }
 
 

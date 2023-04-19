@@ -5,6 +5,7 @@
 #include <QImage>
 #include "boardsizeinput.h"
 #include "cell.h"
+#include <QMessageBox>
 #include <QSize>
 
 Board::Board(Ui::MainWindow *ui)
@@ -235,8 +236,10 @@ void Board::onCellClicked(const unsigned int id)
     }
     if(gameEnd) {
         qDebug() << "WYGRANA!";
+
         this->blankCell->setPixmapAsImage();
         Board::displayCells();
+        QMessageBox::information(this, "Puzzme", "You win!");
     }
     }
 }

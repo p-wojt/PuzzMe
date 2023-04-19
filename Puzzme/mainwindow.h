@@ -28,5 +28,10 @@ private:
     Timer *timer;
     Board *board;
     Validator<QString> *validator;
+
+
+    // QWidget interface
+protected:
+    void resizeEvent(QResizeEvent *event);
 };
 #endif // MAINWINDOW_H
