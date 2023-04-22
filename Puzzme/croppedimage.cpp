@@ -1,11 +1,15 @@
 #include "croppedimage.h"
-#include "qdebug.h"
 
 CroppedImage::CroppedImage(QString fileName, QSize boardFrameSize)
     : QImage(fileName),
       clippings(new QList<QPixmap*>()),
       pixmap(QPixmap::fromImage(this->scaled(boardFrameSize.width(), boardFrameSize.height())))
 {}
+
+CroppedImage::~CroppedImage()
+{
+    delete clippings;
+}
 
 void CroppedImage::clipImage(
         const unsigned short boardSize,
@@ -27,7 +31,7 @@ void CroppedImage::clipImage(
     }
 }
 
-QList<QPixmap *> *CroppedImage::getClippings() const
+QList<QPixmap *> *CroppedImage::getClippings()
 {
     return clippings;
 }

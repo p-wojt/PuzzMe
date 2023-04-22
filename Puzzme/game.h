@@ -3,14 +3,13 @@
 
 #include "board.h"
 #include "timer.h"
-#include "validator.h"
-
 
 class Game : public QObject
 {
     Q_OBJECT
 public:
     Game(Ui::MainWindow *ui);
+    ~Game();
     void initializeGame();
 private:
     Board *board;
@@ -21,6 +20,7 @@ private slots:
     void on_startButton_clicked();
     void on_resetButton_clicked();
     void on_importButton_clicked();
+    void on_solveButton_clicked();
 };
 
 #endif // GAME_H

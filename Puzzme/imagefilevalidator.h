@@ -1,8 +1,8 @@
 #ifndef IMAGEFILEVALIDATOR_H
 #define IMAGEFILEVALIDATOR_H
 
-#include "validator.h"
 #include <QFileInfo>
+#include "validator.h"
 
 class ImageFileValidator : public Validator<QString>
 {

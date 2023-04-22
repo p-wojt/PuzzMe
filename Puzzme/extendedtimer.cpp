@@ -1,6 +1,6 @@
 #include "extendedtimer.h"
-#include "ui_mainwindow.h"
 #include "textutils.h"
+#include "ui_mainwindow.h"
 
 ExtenedTimer::ExtenedTimer(Ui::MainWindow *ui) : Timer()
 {
@@ -10,6 +10,11 @@ ExtenedTimer::ExtenedTimer(Ui::MainWindow *ui) : Timer()
     this->ui = ui;
 
     connect(qTimer, &QTimer::timeout, this, &ExtenedTimer::process);
+}
+
+ExtenedTimer::~ExtenedTimer()
+{
+    delete ui;
 }
 
 void ExtenedTimer::start()

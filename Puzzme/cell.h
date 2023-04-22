@@ -23,8 +23,8 @@ public:
     unsigned short getX();
     unsigned short getY();
     bool isImageSet();
-    bool isBlank() const;
-    QPixmap *getImagePixmap() const;
+    bool isBlank();
+    QPixmap *getImagePixmap();
 signals:
     void cellClicked(Cell *cell);
 public:

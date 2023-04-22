@@ -15,7 +15,6 @@ Board::Board(Ui::MainWindow *ui)
     setup();
 }
 
-
 void Board::resetCellsToInitialPositions()
 {
     if(GameUtils::isGameStarted) {
@@ -65,16 +64,19 @@ void Board::refreshBoardView() {
     int counter = 0;
     for(int i = 0; i < this->size; i++) {
         for (int j = 0; j < this->size; j++, counter++) {
-            qDebug() << this->cellContainer->at(counter);
             this->ui->board->addWidget(this->cellContainer->at(counter), i, j);
         }
     }
     if(GameUtils::isGameStarted) {
         ColorUtils::setDisabledStyle(ui->startButton);
+        ColorUtils::setEnabledStyle(ui->solveButton);
         ui->startButton->setDisabled(true);
+        ui->solveButton->setDisabled(false);
     } else {
         ColorUtils::setEnabledStyle(ui->startButton);
+        ColorUtils::setDisabledStyle(ui->solveButton);;
         ui->startButton->setDisabled(false);
+        ui->solveButton->setDisabled(true);
     }
     ui->imageNumberButton->setText(GameUtils::areNumberCellsActive ? "Numbers" : "Images");
 }
@@ -83,7 +85,6 @@ void Board::changeCellsToOppositeVisibility()
 {
     if (cellContainer->changeToOppositeVisibilty()){
         GameUtils::areNumberCellsActive = !GameUtils::areNumberCellsActive;
-//        ui->imageNumberButton->setText(GameUtils::areNumberCellsActive ? "Numbers" : "Images");
     } else {
         QMessageBox::information(this, "Puzzme", "To change visibility import an image!");
     }
@@ -92,18 +93,9 @@ void Board::changeCellsToOppositeVisibility()
 void Board::initializeCells()
 {
     cellContainer->initializeCells(size);
-//    ui->imageNumberButton->setText(GameUtils::areNumberCellsActive ? "Numbers" : "Images");
 }
 
-
-//void Board::startGame() {
-//    this->setBlankCell();
-//    this->shuffle();
-//    this->displayCells();
-//}
-
 void Board::clearBoard() {
-    qDebug() << "liczba dzieci: " << this->ui->board->count();
     while(this->ui->board->count()){
         QLayoutItem *child = this->ui->board->takeAt(0);
         if(child != nullptr) {
@@ -112,18 +104,20 @@ void Board::clearBoard() {
     }
 }
 
+void Board::setSize(unsigned short size)
+{
+    this->size = size;
+}
 
 void Board::onCellsLinedUp()
 {
-    qDebug() << "onCellsLinedUp";
     GameUtils::isGameStarted = false;
-    QMessageBox::information(this, "Puzzme", "You win!");
+    QMessageBox::information(this, "Puzzme", "Well done!");
     refreshBoardView();
 }
 
 void Board::onRefreshBoard()
 {
-    qDebug() << "onRefreshBoard";
     Board::refreshBoardView();
 }
 

@@ -10,7 +10,7 @@ BoardSizeInput::BoardSizeInput(QWidget *parent)
     : QDialog(parent),
       cursorPosition(0)
 {
-    setWindowTitle(tr("Board size"));
+    setWindowTitle("Board size");
           inputLine = new QLineEdit(this);
           inputLine->setValidator(new QIntValidator(GameUtils::MIN_BOARD_SIZE, GameUtils::MAX_BOARD_SIZE, this));
           okButton = new QPushButton("OK", this);

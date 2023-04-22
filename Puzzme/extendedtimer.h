@@ -9,6 +9,7 @@ class ExtenedTimer : public Timer
 {
 public:
     ExtenedTimer(Ui::MainWindow *ui);
+    ~ExtenedTimer();
     void start();
     void stop();
     void reset();

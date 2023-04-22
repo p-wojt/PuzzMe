@@ -2,9 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "timer.h"
-#include "board.h"
-#include "validator.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,7 +14,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    Ui::MainWindow *getUi() const;
+    Ui::MainWindow *getUi();
 private:
     Ui::MainWindow *ui;
     void setupStyles();

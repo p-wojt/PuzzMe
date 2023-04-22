@@ -2,6 +2,11 @@
 #include "gameutils.h"
 #include "QObject"
 
+CellContainer::~CellContainer()
+{
+    delete blankCell;
+}
+
 void CellContainer::initializeCells(const unsigned short boardSize)
 {
     this->clear();
@@ -9,8 +14,9 @@ void CellContainer::initializeCells(const unsigned short boardSize)
     int counter = 1;
     for(int i = 0; i < boardSize; i++) {
         for (int j = 0; j < boardSize; j++) {
-            Cell *cell = new Cell(counter, i, j, QString::number(counter)); //wcześniej było z parentem (this) na końcu do boarda
+            Cell *cell = new Cell(counter, i, j, QString::number(counter));
             setCellStyles(cell);
+            cell->setScaledContents(true);
             connect(cell, &Cell::cellClicked, this, &CellContainer::onCellClicked);
             this->append(cell);
             counter++;
@@ -20,7 +26,6 @@ void CellContainer::initializeCells(const unsigned short boardSize)
     GameUtils::areNumberCellsActive = true;
 }
 
-//setBlankCell
 void CellContainer::initializeBlankCell()
 {
     blankCell = this->last();
@@ -102,7 +107,6 @@ void CellContainer::shuffle(unsigned short boardSize) {
     }
 }
 
-//startGame
 void CellContainer::resetBlankToNormalCell()
 {
     blankCell->setBlank(false);
@@ -157,8 +161,6 @@ void CellContainer::onCellClicked(Cell *cell)
     if(cell->isBlank()) {
         return;
     }
-
-    qDebug() << "Cell został kliknięty o id: " <<cell->getId();
 
     if(isCellCloseToBlank(cell)) {
         swapCellAndBlankPosition(cell);

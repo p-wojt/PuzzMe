@@ -8,6 +8,7 @@ class CellContainer : public QObject, public QList<Cell*>
     Q_OBJECT
 public:
     CellContainer() {};
+    ~CellContainer();
     void initializeCells(const unsigned short boardSize);
     void initializeBlankCell();
     void setImagePixmapsToCells(QList<QPixmap*> *clippings);

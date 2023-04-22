@@ -33,9 +33,7 @@ set(PROJECT_SOURCES
         boardsizeinput.h
         boardsizeinput.cpp
         colorutils.h
-        colorutils.cpp
         textutils.h
-        textutils.cpp
         gameutils.h
         gameutils.cpp
         cellcontainer.h

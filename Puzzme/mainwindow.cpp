@@ -1,14 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include <QFileDialog>
-#include <QMessageBox>
-#include <QDir>
-#include <QLabel>
-#include <QFileInfo>
-#include <QRect>
 #include "colorutils.cpp"
-#include <QResizeEvent>
-#include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -59,11 +51,11 @@ void MainWindow::setupButtonsStyle()
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
-    ui->mainGameLayout->setGeometry(rect());
     QMainWindow::resizeEvent(event);
+    ui->mainGameLayout->setGeometry(rect());
 }
 
-Ui::MainWindow *MainWindow::getUi() const
+Ui::MainWindow *MainWindow::getUi()
 {
     return ui;
 }

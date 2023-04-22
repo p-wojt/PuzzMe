@@ -1,9 +1,9 @@
 #ifndef TEXTUTILS_H
 #define TEXTUTILS_H
 
-
 #include <QString>
 #include <type_traits>
+
 class TextUtils
 {
 public:
