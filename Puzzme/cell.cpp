@@ -1,6 +1,6 @@
 #include "cell.h"
-#include "board.h"
 #include "QWidget"
+#include "gameutils.h"
 
 Cell::Cell(unsigned short id, unsigned short x, unsigned short y, const QString &text, QWidget* parent, Qt::WindowFlags f)
     : QLabel(text, parent) {
@@ -31,7 +31,9 @@ void Cell::setId(unsigned short id)
 }
 
 void Cell::mousePressEvent(QMouseEvent* event) {
-    emit cellClicked(this->id);
+    if(GameUtils::isGameStarted) {
+        emit cellClicked(this);
+    }
 }
 
 QPixmap *Cell::getImagePixmap() const
@@ -66,7 +68,7 @@ void Cell::setAsBlank()
     this->setBlank(true);
 }
 
-bool Cell::isBlank() const
+    bool Cell::isBlank() const
 {
     return blank;
 }

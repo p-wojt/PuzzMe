@@ -12,7 +12,6 @@ public:
     Cell();
     ~Cell();
     void setBlank(bool isBlank);
-    bool isBlank() const;
     void setImagePixmap(QPixmap *newImagePixmap);
     void setAsBlank();
     void setPixmapAsNumber();
@@ -20,13 +19,14 @@ public:
     void setId(unsigned short id);
     void setX(unsigned short x);
     void setY(unsigned short y);
-    QPixmap *getImagePixmap() const;
     unsigned short getId();
     unsigned short getX();
     unsigned short getY();
     bool isImageSet();
+    bool isBlank() const;
+    QPixmap *getImagePixmap() const;
 signals:
-    void cellClicked(const unsigned int id);
+    void cellClicked(Cell *cell);
 public:
     void mousePressEvent(QMouseEvent* event);
 private:

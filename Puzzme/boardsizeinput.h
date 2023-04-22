@@ -10,10 +10,10 @@ public:
     BoardSizeInput(QWidget *parent = nullptr);
     unsigned short getValue();
 private:
-private:
-    QLineEdit *m_lineEdit;
-    QPushButton *m_okButton;
-    QPushButton *m_cancelButton;
+    QLineEdit *inputLine;
+    QPushButton *okButton;
+    QPushButton *cancelButton;
+    int cursorPosition;
 };
 
 #endif // BOARDSIZEINPUT_H

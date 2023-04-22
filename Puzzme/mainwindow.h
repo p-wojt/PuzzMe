@@ -17,20 +17,14 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-private slots:
-    void on_startButton_clicked();
-    void on_resetButton_clicked();
-    void on_importButton_clicked();
-    void on_boardButton_clicked();
-    void on_imageNumberButton_clicked();
+    Ui::MainWindow *getUi() const;
 private:
     Ui::MainWindow *ui;
-    Timer *timer;
-    Board *board;
-    Validator<QString> *validator;
-
-
-    // QWidget interface
+    void setupStyles();
+    void setupMainWindowStyle();
+    void setupTimerStyle();
+    void setupLayoutsStyle();
+    void setupButtonsStyle();
 protected:
     void resizeEvent(QResizeEvent *event);
 };

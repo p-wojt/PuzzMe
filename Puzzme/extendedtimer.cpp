@@ -8,7 +8,6 @@ ExtenedTimer::ExtenedTimer(Ui::MainWindow *ui) : Timer()
     this->minutes = 0;
     this->seconds = 0;
     this->ui = ui;
-    this->ui->timer->
 
     connect(qTimer, &QTimer::timeout, this, &ExtenedTimer::process);
 }

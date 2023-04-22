@@ -1,35 +1,38 @@
 #include "boardsizeinput.h"
-#include <QDialog>
-#include <QIntValidator>
-#include <QLineEdit>
-#include <QMessageBox>
-#include <QPushButton>
-#include <QVBoxLayout>
+#include "gameutils.h"
 
-BoardSizeInput::BoardSizeInput(QWidget *parent) : QDialog(parent)
+#include <QIntValidator>
+#include <qboxlayout.h>
+#include <qmessagebox.h>
+#include <qpushbutton.h>
+
+BoardSizeInput::BoardSizeInput(QWidget *parent)
+    : QDialog(parent),
+      cursorPosition(0)
 {
     setWindowTitle(tr("Board size"));
-          m_lineEdit = new QLineEdit(this);
-          m_lineEdit->setValidator(new QIntValidator(3, 6, this));
-          m_okButton = new QPushButton(tr("OK"), this);
-          m_cancelButton = new QPushButton(tr("Cancel"), this);
-          connect(m_okButton, &QPushButton::clicked, this, &QDialog::accept);
-          connect(m_cancelButton, &QPushButton::clicked, this, &QDialog::reject);
+          inputLine = new QLineEdit(this);
+          inputLine->setValidator(new QIntValidator(GameUtils::MIN_BOARD_SIZE, GameUtils::MAX_BOARD_SIZE, this));
+          okButton = new QPushButton("OK", this);
+          cancelButton = new QPushButton("Cancel", this);
+          connect(okButton, &QPushButton::clicked, this, &QDialog::accept);
+          connect(cancelButton, &QPushButton::clicked, this, &QDialog::reject);
           QVBoxLayout *layout = new QVBoxLayout(this);
-          layout->addWidget(m_lineEdit);
+          layout->addWidget(inputLine);
           QHBoxLayout *buttonLayout = new QHBoxLayout();
-          buttonLayout->addWidget(m_okButton);
-          buttonLayout->addWidget(m_cancelButton);
+          buttonLayout->addWidget(okButton);
+          buttonLayout->addWidget(cancelButton);
           layout->addLayout(buttonLayout);
 }
 
 unsigned short BoardSizeInput::getValue()
 {
-    short value = m_lineEdit->text().toShort();
-    if(value >= 3 && value <= 9 ) {
-        return value;
+    QString strValue = inputLine->text();
+    QValidator::State state = inputLine->validator()->validate(strValue, cursorPosition);
+    if(state == QValidator::Acceptable) {
+        return strValue.toShort();
     } else {
         QMessageBox::information(this, "Puzzme", "Board size should be between 3 and 9! Board have been set to default size: 3");
-        return 3;
+        return GameUtils::MIN_BOARD_SIZE;
     }
 }

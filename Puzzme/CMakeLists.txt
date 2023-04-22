@@ -36,6 +36,12 @@ set(PROJECT_SOURCES
         colorutils.cpp
         textutils.h
         textutils.cpp
+        gameutils.h
+        gameutils.cpp
+        cellcontainer.h
+        cellcontainer.cpp
+        croppedimage.h
+        croppedimage.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

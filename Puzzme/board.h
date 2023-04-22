@@ -5,18 +5,23 @@
 #include "./ui_mainwindow.h"
 #include <QList>
 #include "cell.h"
+#include "cellcontainer.h"
+#include "croppedimage.h"
+#include "validator.h"
 
 class Board : public QWidget
 {
 public:
     Board(Ui::MainWindow *ui);
-    void initializeNumberCells();
     void setImageToCells();
-    void setImage(QImage *image);
-    void displayCells();
-    void setBlankCell();
+    void resetCellsToInitialPositions();
+    bool setupCroppedImage();
+    void setupCellsImage();
+    void refreshBoardView();
+    void changeCellsToOppositeVisibility();
+    void initializeCells();
+//    void setBlankCell();
     void setup();
-    void shuffle();
     void startGame();
     void clearBoard();
     void setScaledPixmap(QSize size);
@@ -30,16 +35,18 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    short unsigned int size;
-    QList<Cell*> *cells;
-    Cell* blankCell;
-    QImage *image;
-    bool areNumberCells;
-    QPixmap *scaledPixmap;
+    unsigned short size;
+    CellContainer *cellContainer;
+    CroppedImage *croppedImage;
+    Validator<QString> *imageValidator;
+//    QList<Cell*> *cells;
+//    Cell* blankCell;
+//    QImage *image;
+//    bool areNumberCells;
+//    QPixmap *scaledPixmap;
 public slots:
-    void onCellClicked(const unsigned int id);
-
-
+    void onCellsLinedUp();
+    void onRefreshBoard();
 };
 
 #endif // BOARD_H

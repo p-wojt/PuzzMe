@@ -1,134 +1,106 @@
 #include "board.h"
-#include <QLabel>
-#include <QList>
-#include <iostream>
-#include <QImage>
-#include "boardsizeinput.h"
-#include "cell.h"
-#include <QMessageBox>
-#include <QSize>
+#include "gameutils.h"
+#include "imagefilevalidator.h"
+#include "colorutils.h"
+
+#include <qfiledialog.h>
+#include <qmessagebox.h>
 
 Board::Board(Ui::MainWindow *ui)
+    : ui(ui),
+      size(GameUtils::MIN_BOARD_SIZE),
+      cellContainer(new CellContainer()),
+      imageValidator(new ImageFileValidator())
 {
-    this->ui = ui;
-    this->size = 3;
-    this->cells = new QList<Cell*>();
-    this->areNumberCells = true;
-    this->image = nullptr;
-    this->scaledPixmap = nullptr;
+    setup();
+}
+
+
+void Board::resetCellsToInitialPositions()
+{
+    if(GameUtils::isGameStarted) {
+        GameUtils::isGameStarted = false;
+        ui->startButton->setDisabled(false);
+        cellContainer->resetBlankToNormalCell();
+        cellContainer->setInitialPostions(size);
+    }
+}
+
+bool Board::setupCroppedImage()
+{
+    QString filename = QFileDialog::getOpenFileName(this, "Open a file", QDir::homePath(), "Image (*.jpg, *.png)");
+    if (imageValidator->validate(filename)) {
+        if(croppedImage != nullptr){
+            delete croppedImage;
+        }
+        croppedImage = new CroppedImage(filename, ui->boardFrame->size());
+        croppedImage->clipImage(size, cellContainer->getCellsWidth(), cellContainer->getCellsHeight());
+        return true;
+    }
+    return false;
+}
+
+void Board::setupCellsImage()
+{
+   cellContainer->setImagePixmapsToCells(croppedImage->getClippings());
+   cellContainer->setImagePixmapsVisibleBesidesBlank();
+   ui->imageNumberButton->setText(GameUtils::areNumberCellsActive ? "Numbers" : "Images");
 }
 
 void Board::setup() {
-    this->initializeNumberCells();
-    this->displayCells();
+    connect(cellContainer, &CellContainer::cellsLinedUpSingal, this, &Board::onCellsLinedUp);
+    connect(cellContainer, &CellContainer::refreshBoardSignal, this, &Board::refreshBoardView);
+    initializeCells();
+    refreshBoardView();
 }
 
-
-void Board::initializeNumberCells() {
-    this->cells->clear();
-    this->areNumberCells = true;
-
-    int counter = 1;
-    for(int i = 0; i < size; i++) {
-        for (int j = 0; j < size; j++) {
-            Cell *cell = new Cell(counter, i, j, QString::number(counter), this);
-            cell->setStyleSheet("border: 1px solid #F8F8F8; qproperty-alignment: AlignCenter; color: #F8F8F8; font-size: 24px;");
-            connect(cell, &Cell::cellClicked, this, &Board::onCellClicked);
-            this->cells->append(cell);
-            counter++;
-        }
-    }
-}
-
-void Board::setImageToCells() {
-    this->areNumberCells = false;
-
-    QSize size = this->ui->boardFrame->frameSize();
-    QPixmap pixmap = QPixmap::fromImage(this->image->scaled(size.width(), size.height()));
-
-    int counter = 0;
-    int cellEdgeHeight = this->cells->at(0)->height();
-    int cellEdgeWidth = this->cells->at(0)->width();
-    for (int i = 0 ; i < this->size ; i++) {
-        for( int j = 0; j < this->size; j++) {
-            const QPoint *topleft = new QPoint(j*cellEdgeWidth, i*cellEdgeHeight);
-            const QPoint *bottomright = new QPoint(((j+1)*cellEdgeWidth), (i+1)*cellEdgeHeight);
-            QRect rect(*topleft, *bottomright);
-//            QPixmap cellPixmap = pixmap.copy(rect);
-
-            this->cells->at(counter)->setImagePixmap(new QPixmap(pixmap.copy(rect)));
-            if(!this->cells->at(counter)->isBlank()){
-                this->cells->at(counter)->setPixmapAsImage();
-            }
-            counter++;
-        }
-    }
-}
-
-void Board::setImage(QImage *image)
+void Board::startGame()
 {
-    this->image = image;
+    cellContainer->initializeBlankCell();
+    cellContainer->shuffle(size);
+    refreshBoardView();
 }
 
-
-void Board::displayCells() {
-    qDebug() << ui->board->count();
+void Board::refreshBoardView() {
     int counter = 0;
     for(int i = 0; i < this->size; i++) {
         for (int j = 0; j < this->size; j++, counter++) {
-            this->ui->board->addWidget(this->cells->at(counter), i, j);
+            qDebug() << this->cellContainer->at(counter);
+            this->ui->board->addWidget(this->cellContainer->at(counter), i, j);
         }
+    }
+    if(GameUtils::isGameStarted) {
+        ColorUtils::setDisabledStyle(ui->startButton);
+        ui->startButton->setDisabled(true);
+    } else {
+        ColorUtils::setEnabledStyle(ui->startButton);
+        ui->startButton->setDisabled(false);
+    }
+    ui->imageNumberButton->setText(GameUtils::areNumberCellsActive ? "Numbers" : "Images");
+}
+
+void Board::changeCellsToOppositeVisibility()
+{
+    if (cellContainer->changeToOppositeVisibilty()){
+        GameUtils::areNumberCellsActive = !GameUtils::areNumberCellsActive;
+//        ui->imageNumberButton->setText(GameUtils::areNumberCellsActive ? "Numbers" : "Images");
+    } else {
+        QMessageBox::information(this, "Puzzme", "To change visibility import an image!");
     }
 }
 
-void Board::shuffle() {
-    std::random_shuffle(this->cells->begin(), this->cells->end());
-    int counter = 0;
-    for(int i = 0; i < this->size; i++) {
-        for(int j = 0; j < this->size; j++) {
-            this->cells->at(counter)->setX(j);
-            this->cells->at(counter)->setY(i);
-            counter++;
-        }
-    }
+void Board::initializeCells()
+{
+    cellContainer->initializeCells(size);
+//    ui->imageNumberButton->setText(GameUtils::areNumberCellsActive ? "Numbers" : "Images");
 }
 
-void Board::setBlankCell() {
-//    Cell *temp = this->cells->last();
-//    QPixmap *placeholder = new QPixmap();
-//    temp->setPixmap(*placeholder);
-//    temp->setBlank(true);
-//    this->cells->replace(this->cells->size()-1, temp);
-    this->cells->last()->setAsBlank();
-    blankCell = this->cells->last();
-    for(int i = 0; i < cells->size(); i++) {
-        Cell *temp = cells->at(i);
-        if(temp->getId() > blankCell->getId()) {
-            temp->setId(temp->getId() - 1);
-        }
-    }
-    blankCell->setId(cells->size());
-}
 
-void Board::startGame() {
-    //reset blankCell
-    for(int k = 0 ; k < this->cells->size(); k++) {
-        Cell *cell = this->cells->at(k);
-        if(cell->isBlank()){
-            cell->setBlank(false);
-            if(this->areNumberCells) {
-                cell->setPixmapAsNumber();
-            } else {
-                cell->setPixmapAsImage();
-            }
-            break;
-        }
-    }
-    //set new BlankCell
-    this->setBlankCell();
-    this->shuffle();
-    this->displayCells();
-}
+//void Board::startGame() {
+//    this->setBlankCell();
+//    this->shuffle();
+//    this->displayCells();
+//}
 
 void Board::clearBoard() {
     qDebug() << "liczba dzieci: " << this->ui->board->count();
@@ -138,110 +110,20 @@ void Board::clearBoard() {
             delete child->widget();
         }
     }
-//    for(int i = 0; i < ui->board->)
-    //    this->ui->board->removeWidget()
 }
 
-void Board::setScaledPixmap(QSize size)
+
+void Board::onCellsLinedUp()
 {
-    if(this->image) {
-        QPixmap pixmap = QPixmap::fromImage(this->image->scaled(size.width(), size.height()));
-        qDebug() << "scalujemy image";
-        this->scaledPixmap = &pixmap;
-        qDebug() << this->scaledPixmap;
-    }
-
+    qDebug() << "onCellsLinedUp";
+    GameUtils::isGameStarted = false;
+    QMessageBox::information(this, "Puzzme", "You win!");
+    refreshBoardView();
 }
 
-void Board::swapCells(Cell *cell)
+void Board::onRefreshBoard()
 {
-
-    Board::displayCells();
+    qDebug() << "onRefreshBoard";
+    Board::refreshBoardView();
 }
-
-void Board::changeState()
-{
-    bool areImagesSet = true;
-    for(int i = 0; i<this->cells->size(); i++) {
-        if(!cells->at(i)->isBlank()) {
-            if(areNumberCells) {
-                if(cells->at(i)->isImageSet()) {
-                    cells->at(i)->setPixmapAsImage();
-                } else {
-                    areImagesSet = false;
-                    break;
-                }
-            } else {
-                cells->at(i)->setPixmapAsNumber();
-            }
-        }
-    }
-    if(areImagesSet) {
-        areNumberCells = !areNumberCells;
-    }
-}
-
-bool Board::getAreNumberCells() const
-{
-    return areNumberCells;
-}
-
-
-
-void Board::onCellClicked(const unsigned int id)
-{
-    qDebug() << "Cell został kliknięty o id: " << id;
-    if(blankCell->getId() == id) {
-        return;
-    }
-    bool isToSwap = false;
-    int cellIndex = 0;
-    Cell* temp = nullptr;
-    for(int i = 0; i < cells->size(); i++) {
-        temp = cells->at(i);
-        if(temp->getId() == id) {
-            if(abs(temp->getX() - blankCell->getX()) <= 1 && abs(temp->getY() - blankCell->getY()) <= 1 && !(abs(temp->getY() - blankCell->getY()) == abs(temp->getX() - blankCell->getX()))) {
-                qDebug() << "Zamiana";
-                isToSwap = true;
-                cellIndex = i;
-                break;
-            }
-        }
-    }
-
-    if(isToSwap) {
-        unsigned int blankCellIndex = 0;
-        for(int i = 0; i < cells->size(); i++) {
-            if(cells->at(i)->isBlank()) {
-                blankCellIndex = i;
-                break;
-            }
-        }
-        int tempNumber = temp->getX();
-        temp->setX(blankCell->getX());
-        blankCell->setX(tempNumber);
-        tempNumber = temp->getY();
-        temp->setY(blankCell->getY());
-        blankCell->setY(tempNumber);
-        cells->swapItemsAt(cellIndex, blankCellIndex);
-        Board::displayCells();
-
-
-    bool gameEnd = true;
-    for(int i = 1; i <= cells->size(); i++) {
-        if(cells->at(i-1)->getId() != i){
-            gameEnd = false;
-            break;
-        }
-    }
-    if(gameEnd) {
-        qDebug() << "WYGRANA!";
-
-        this->blankCell->setPixmapAsImage();
-        Board::displayCells();
-        QMessageBox::information(this, "Puzzme", "You win!");
-    }
-    }
-}
-
 
