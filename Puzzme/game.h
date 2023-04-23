@@ -4,23 +4,29 @@
 #include "board.h"
 #include "timer.h"
 
+/*!
+ * \brief Główna klasa - główny kontener. Symbolizuje
+ */
 class Game : public QObject
 {
     Q_OBJECT
 public:
     Game(Ui::MainWindow *ui);
     ~Game();
+    /*!
+     * \brief Inicjalizuje grę - ustawia planszę.
+     */
     void initializeGame();
 private:
     Board *board;
     Timer *timer;
 private slots:
-    void on_imageNumberButton_clicked();
-    void on_boardButton_clicked();
-    void on_startButton_clicked();
-    void on_resetButton_clicked();
-    void on_importButton_clicked();
-    void on_solveButton_clicked();
+    void imageNumberButton_clicked();
+    void boardButton_clicked();
+    void startButton_clicked();
+    void resetButton_clicked();
+    void importButton_clicked();
+    void solveButton_clicked();
 };
 
 #endif // GAME_H

@@ -7,12 +7,12 @@ Game::Game(Ui::MainWindow *ui)
     : board(new Board(ui)),
       timer(new ExtenedTimer(ui))
 {
-    connect(ui->boardButton, &QPushButton::clicked, this, &Game::on_boardButton_clicked);
-    connect(ui->imageNumberButton, &QPushButton::clicked, this, &Game::on_imageNumberButton_clicked);
-    connect(ui->startButton, &QPushButton::clicked, this, &Game::on_startButton_clicked);
-    connect(ui->resetButton, &QPushButton::clicked, this, &Game::on_resetButton_clicked);
-    connect(ui->importButton, &QPushButton::clicked, this, &Game::on_importButton_clicked);
-    connect(ui->solveButton, &QPushButton::clicked, this, &Game::on_solveButton_clicked);
+    connect(ui->boardButton, &QPushButton::clicked, this, &Game::boardButton_clicked);
+    connect(ui->imageNumberButton, &QPushButton::clicked, this, &Game::imageNumberButton_clicked);
+    connect(ui->startButton, &QPushButton::clicked, this, &Game::startButton_clicked);
+    connect(ui->resetButton, &QPushButton::clicked, this, &Game::resetButton_clicked);
+    connect(ui->importButton, &QPushButton::clicked, this, &Game::importButton_clicked);
+    connect(ui->solveButton, &QPushButton::clicked, this, &Game::solveButton_clicked);
 }
 
 Game::~Game()
@@ -26,13 +26,13 @@ void Game::initializeGame()
     board->setup();
 }
 
-void Game::on_imageNumberButton_clicked()
+void Game::imageNumberButton_clicked()
 {
     board->changeCellsToOppositeVisibility();
     board->refreshBoardView();
 }
 
-void Game::on_boardButton_clicked()
+void Game::boardButton_clicked()
 {
     BoardSizeInput dialog(board);
         if (dialog.exec() == QDialog::Accepted)
@@ -46,7 +46,7 @@ void Game::on_boardButton_clicked()
         }
 }
 
-void Game::on_startButton_clicked()
+void Game::startButton_clicked()
 {
     GameUtils::isGameStarted = true;
     board->startGame();
@@ -54,7 +54,7 @@ void Game::on_startButton_clicked()
 }
 
 
-void Game::on_resetButton_clicked()
+void Game::resetButton_clicked()
 {
     GameUtils::isGameStarted = false;
     timer->reset();
@@ -64,7 +64,7 @@ void Game::on_resetButton_clicked()
 }
 
 
-void Game::on_importButton_clicked()
+void Game::importButton_clicked()
 {
     if(board->setupCroppedImage()){
         timer->reset();
@@ -74,7 +74,7 @@ void Game::on_importButton_clicked()
     }
 }
 
-void Game::on_solveButton_clicked()
+void Game::solveButton_clicked()
 {
     if(GameUtils::isGameStarted) {
         timer->stop();

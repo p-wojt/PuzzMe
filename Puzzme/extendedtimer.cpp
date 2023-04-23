@@ -34,7 +34,7 @@ void ExtenedTimer::reset()
     this->hours = 0;
     this->minutes = 0;
     this->seconds = 0;
-    ExtenedTimer::updateLCD();
+    ExtenedTimer::updateView();
 }
 
 void ExtenedTimer::process()
@@ -48,10 +48,10 @@ void ExtenedTimer::process()
             }
         }
     }
-   ExtenedTimer::updateLCD();
+   ExtenedTimer::updateView();
 }
 
-void ExtenedTimer::updateLCD() {
+void ExtenedTimer::updateView() {
     this->ui->timer->setText(
                 TextUtils::getTimeDigitsFormatFrom(hours)
                 +":"

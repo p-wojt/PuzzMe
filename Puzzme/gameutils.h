@@ -1,6 +1,9 @@
 #ifndef GAMEUTILS_H
 #define GAMEUTILS_H
 
+/*!
+ * \brief Klasa użyteczna zawierająca statyczne zmienne globalne.
+ */
 class GameUtils {
 public:
     static bool isGameStarted;
