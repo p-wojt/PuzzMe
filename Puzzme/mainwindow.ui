@@ -59,7 +59,7 @@
       <height>500</height>
      </size>
     </property>
-    <layout class="QGridLayout" name="mainLayout" rowstretch="1,0,0,0,0,0" rowminimumheight="1,1,3,1,1,1">
+    <layout class="QGridLayout" name="mainLayout" rowstretch="1,0,0,0,0,0,0" rowminimumheight="1,1,3,1,1,1,0">
      <property name="sizeConstraint">
       <enum>QLayout::SetMaximumSize</enum>
      </property>
@@ -73,59 +73,77 @@
        </property>
       </layout>
      </item>
-     <item row="2" column="0">
-      <widget class="QFrame" name="boardFrame">
-       <property name="enabled">
-        <bool>true</bool>
+     <item row="0" column="0">
+      <layout class="QHBoxLayout" name="imageNumberLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
        </property>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="imageNumberButton">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>1</horstretch>
+           <verstretch>1</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>200</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="text">
+          <string>Numbers</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="timer">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>1</horstretch>
          <verstretch>1</verstretch>
         </sizepolicy>
        </property>
-       <property name="minimumSize">
+       <property name="maximumSize">
         <size>
-         <width>600</width>
-         <height>500</height>
+         <width>16777215</width>
+         <height>100</height>
         </size>
        </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
+       <property name="text">
+        <string>00:00:00</string>
        </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <layout class="QGridLayout" name="board">
-          <property name="sizeConstraint">
-           <enum>QLayout::SetDefaultConstraint</enum>
-          </property>
-          <property name="horizontalSpacing">
-           <number>1</number>
-          </property>
-          <property name="verticalSpacing">
-           <number>0</number>
-          </property>
-         </layout>
-        </item>
-       </layout>
       </widget>
      </item>
      <item row="4" column="0">
@@ -235,35 +253,71 @@
        </item>
       </layout>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="timer">
+     <item row="2" column="0">
+      <widget class="QFrame" name="boardFrame">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>1</horstretch>
          <verstretch>1</verstretch>
         </sizepolicy>
        </property>
-       <property name="maximumSize">
+       <property name="minimumSize">
         <size>
-         <width>16777215</width>
-         <height>100</height>
+         <width>600</width>
+         <height>500</height>
         </size>
        </property>
-       <property name="text">
-        <string>00:00:00</string>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
        </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
        </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QGridLayout" name="board">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetDefaultConstraint</enum>
+          </property>
+          <property name="horizontalSpacing">
+           <number>1</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>0</number>
+          </property>
+         </layout>
+        </item>
+       </layout>
       </widget>
      </item>
-     <item row="0" column="0">
-      <layout class="QHBoxLayout" name="imageNumberLayout">
+     <item row="5" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <property name="spacing">
+        <number>12</number>
+       </property>
        <property name="sizeConstraint">
         <enum>QLayout::SetDefaultConstraint</enum>
        </property>
        <item>
-        <spacer name="horizontalSpacer">
+        <spacer name="horizontalSpacer_2">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -276,14 +330,14 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="imageNumberButton">
+        <widget class="QPushButton" name="algorithmAButton">
          <property name="enabled">
           <bool>true</bool>
          </property>
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>1</horstretch>
-           <verstretch>1</verstretch>
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
           </sizepolicy>
          </property>
          <property name="minimumSize">
@@ -298,27 +352,48 @@
            <height>50</height>
           </size>
          </property>
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
          <property name="text">
-          <string>Numbers</string>
+          <string>Algorithm A</string>
          </property>
         </widget>
        </item>
-      </layout>
-     </item>
-     <item row="5" column="0">
-      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <widget class="QPushButton" name="algorithmBButton">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>200</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Algorithm B</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QPushButton" name="startButton">
          <property name="enabled">
           <bool>true</bool>
          </property>
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>1</horstretch>
-           <verstretch>1</verstretch>
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
           </sizepolicy>
          </property>
          <property name="minimumSize">
@@ -337,6 +412,19 @@
           <string>Start</string>
          </property>
         </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </item>

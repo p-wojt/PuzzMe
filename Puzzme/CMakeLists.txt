@@ -40,6 +40,13 @@ set(PROJECT_SOURCES
         cellcontainer.cpp
         croppedimage.h
         croppedimage.cpp
+        artificialintelligence.h
+        artificialintelligencea.h
+        artificialintelligencea.cpp
+        artificialintelligenceb.h
+        artificialintelligenceb.cpp
+        algorithmworker.h
+        algorithmworker.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

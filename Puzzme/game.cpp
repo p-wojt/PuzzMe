@@ -2,6 +2,12 @@
 #include "extendedtimer.h"
 #include "boardsizeinput.h"
 #include "gameutils.h"
+#include "artificialintelligencea.h"
+#include "artificialintelligenceb.h"
+#include "colorutils.cpp"
+
+#include <QMessageBox>
+#include <future>
 
 Game::Game(Ui::MainWindow *ui)
     : board(new Board(ui)),
@@ -13,6 +19,8 @@ Game::Game(Ui::MainWindow *ui)
     connect(ui->resetButton, &QPushButton::clicked, this, &Game::resetButton_clicked);
     connect(ui->importButton, &QPushButton::clicked, this, &Game::importButton_clicked);
     connect(ui->solveButton, &QPushButton::clicked, this, &Game::solveButton_clicked);
+    connect(ui->algorithmAButton, &QPushButton::clicked, this, &Game::algorithmAButton_clicked);
+    connect(ui->algorithmBButton, &QPushButton::clicked, this, &Game::algorithmBButton_clicked);
 }
 
 Game::~Game()
@@ -77,10 +85,26 @@ void Game::importButton_clicked()
 void Game::solveButton_clicked()
 {
     if(GameUtils::isGameStarted) {
-        timer->stop();
-        board->resetCellsToInitialPositions();
-        board->refreshBoardView();
-        board->onCellsLinedUp();
+        if(GameUtils::isAiSolvingGame){
+            GameUtils::isAiSolvingGame = false;
+            timer->stop();
+        } else {
+            timer->stop();
+            board->resetCellsToInitialPositions();
+            board->refreshBoardView();
+            board->onCellsLinedUp();
+        }
     }
+}
+
+void Game::algorithmAButton_clicked()
+{
+
+    board->solve(new ArtificialIntelligenceA());
+}
+
+void Game::algorithmBButton_clicked()
+{
+    board->solve(new ArtificialIntelligenceB());
 }
 

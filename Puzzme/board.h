@@ -2,6 +2,7 @@
 #define BOARD_H
 
 #include "./ui_mainwindow.h"
+#include "artificialintelligence.h"
 #include "cellcontainer.h"
 #include "croppedimage.h"
 #include "validator.h"
@@ -60,6 +61,20 @@ public:
      * \param size rozmiar planszy.
      */
     void setSize(unsigned short size);
+    /*!
+     * \brief Rozwiązuje komórki na planszy według ustalonego algorytmu.
+     * \param ai typ algorytmu.
+     */
+    void solve(ArtificialIntelligence *ai);
+    /*!
+     * \brief Blokuje wszystkie przyciski.
+     */
+    void blockButtonsDisallowedDurningAlgorithm();
+    /*!
+     * \brief Odblokowuje wszystkie przyciski.
+     */
+    void unlockButtonsDisallowedDurningAlgorithm();
+
 private:
     Ui::MainWindow *ui;
     unsigned short size;
@@ -75,6 +90,10 @@ public slots:
      * \brief Slot symbolizujący odświeżenie planszy.
      */
     void onRefreshBoard();
+    /*!
+     * \brief Slot symbolizujący zakończenie pracy AlgorithmWorkera
+     */
+    void onAlgorithmWorkerFinish();
 };
 
 #endif // BOARD_H

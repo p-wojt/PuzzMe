@@ -2,9 +2,16 @@
 #include "gameutils.h"
 #include "imagefilevalidator.h"
 #include "colorutils.h"
+#include "artificialintelligence.h"
+#include "algorithmworker.h"
 
 #include <qfiledialog.h>
 #include <qmessagebox.h>
+#include <chrono>
+#include <thread>
+#include <qtimer.h>
+#include <qthread.h>
+
 
 Board::Board(Ui::MainWindow *ui)
     : ui(ui),
@@ -74,7 +81,7 @@ void Board::refreshBoardView() {
         ui->solveButton->setDisabled(false);
     } else {
         ColorUtils::setEnabledStyle(ui->startButton);
-        ColorUtils::setDisabledStyle(ui->solveButton);;
+        ColorUtils::setDisabledStyle(ui->solveButton);
         ui->startButton->setDisabled(false);
         ui->solveButton->setDisabled(true);
     }
@@ -109,6 +116,51 @@ void Board::setSize(unsigned short size)
     this->size = size;
 }
 
+void Board::solve(ArtificialIntelligence *ai)
+{
+    if(GameUtils::isGameStarted) {
+        GameUtils::isAiSolvingGame = true;
+        blockButtonsDisallowedDurningAlgorithm();
+
+        AlgorithmWorker *worker = new AlgorithmWorker(ai, cellContainer);
+        QThread *thread = new QThread();
+        worker->moveToThread(thread);
+
+        connect(thread, &QThread::started, worker, &AlgorithmWorker::run);
+        connect(worker, &AlgorithmWorker::finished, thread, &QThread::quit);
+        connect(worker, &AlgorithmWorker::finished, this, &Board::onAlgorithmWorkerFinish);
+        connect(worker, &AlgorithmWorker::finished, worker, &AlgorithmWorker::deleteLater);
+        connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+
+        thread->start();
+    } else {
+         QMessageBox::information(this, "Puzzme", "First you have to start the game!");
+    }
+
+}
+
+void Board::blockButtonsDisallowedDurningAlgorithm()
+{
+    QList<QPushButton*> buttons = ui->centralwidget->findChildren<QPushButton*>();
+    for (auto button : buttons) {
+        if(button == ui->imageNumberButton || button == ui->solveButton)
+            continue;
+        button->setDisabled(true);
+        ColorUtils::setDisabledStyle(button);
+    }
+}
+
+void Board::unlockButtonsDisallowedDurningAlgorithm()
+{
+    QList<QPushButton*> buttons = ui->centralwidget->findChildren<QPushButton*>();
+    for (auto button : buttons) {
+        if(button == ui->solveButton)
+            continue;
+        button->setDisabled(false);
+        ColorUtils::setEnabledStyle(button);
+    }
+}
+
 void Board::onCellsLinedUp()
 {
     GameUtils::isGameStarted = false;
@@ -119,5 +171,13 @@ void Board::onCellsLinedUp()
 void Board::onRefreshBoard()
 {
     Board::refreshBoardView();
+}
+
+void Board::onAlgorithmWorkerFinish()
+{
+    resetCellsToInitialPositions();
+    refreshBoardView();
+    onCellsLinedUp();
+    unlockButtonsDisallowedDurningAlgorithm();
 }
 
